@@ -1,0 +1,52 @@
+#todo-container {
+  max-width: 300vw;
+  max-height: 100vw;
+  padding: 8vw;
+  background-color: #0D1C42;
+  border-radius: 3vw;
+}
+
+#todo-input {
+  padding: 4vw;
+  width: 70%;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+button {
+  padding: 4vw;
+  background-color: #010736;
+  border-radius: 2vw;
+  border: none;
+  color: white;
+  margin-left: 3vw;
+  font-size: 3vw;
+}
+
+ul {
+  list-style-type: none;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #22396F;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 7vh;
+  padding: 3vh;
+  background-color: #010736;
+  color: #FCF1D0;
+  border-radius: 2vw;
+  font-size: 7vw;
+}
+
+li {
+  display : flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  color: #fcf1d0;
+}
