@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <title>To do list</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+  
+  <body>
+    <h1>My To-Do list</h1>
+    <div id="todo-container">
+      <input type="text" id="todo-input">
+      <button id="add-btn">Add</button>
+      <ul id="todo-list">
+        
+      </ul>
+    </div>
+    <script src="script.js">
+      const todoInput = document.getElementById("todo-input");
+const addButton = document.getElementById("add-btn");
+const todoList = document.getElementById("todo-list");
+
+addButton.addEventListener("click", function() {
+    const task = todoInput.value.trim();
+    if (task === "") {
+        alert("Please enter a task.");
+        return;
+    }
+
+    createTask(task, false);
+    todoInput.value = '';
+    saveTasks();
+});
+
+// Helper function to render a task element
+function createTask(taskText, isCompleted = false) {
+    const li = document.createElement("li");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = isCompleted;
+
+    let taskElement;
+    if (taskText.startsWith("http://") || taskText.startsWith("https://")) {
+        taskElement = document.createElement("a");
+        taskElement.href = taskText;
+        taskElement.textContent = taskText;
+        taskElement.target = "_blank";
+    } else {
+        taskElement = document.createElement("span");
+        taskElement.textContent = taskText;
+    }
+
+    // Apply completed style if saved as checked
+    if (isCompleted) {
+        taskElement.style.pointerEvents = "none";
+        taskElement.style.opacity = "0.5";
+        taskElement.style.textDecoration = "line-through";
+    }
+
+    // Toggle style & save progress when checking/unchecking
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            taskElement.style.pointerEvents = "none";
+            taskElement.style.opacity = "0.5";
+            taskElement.style.textDecoration = "line-through";
+        } else {
+            taskElement.style.pointerEvents = "auto";
+            taskElement.style.opacity = "1";
+            taskElement.style.textDecoration = "none";
+        }
+        saveTasks();
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", function() {
+        li.remove();
+        saveTasks();
+    });
+
+    li.appendChild(checkbox);
+    li.appendChild(taskElement);
+    li.appendChild(deleteButton);
+
+    todoList.appendChild(li);
+}
+
+// Save task objects containing text and completion state
+function saveTasks() {
+    const tasks = [];
+    const items = todoList.querySelectorAll("li");
+    
+    items.forEach(li => {
+        const textEl = li.querySelector("span, a");
+        const checkbox = li.querySelector("input[type='checkbox']");
+        
+        if (textEl && checkbox) {
+            tasks.push({
+                text: textEl.textContent,
+                completed: checkbox.checked
+            });
+        }
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Load and rebuild saved tasks from localStorage
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.forEach(task => {
+        createTask(task.text, task.completed);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadTasks);
+
+    </script>
+  </body>
+</html>
